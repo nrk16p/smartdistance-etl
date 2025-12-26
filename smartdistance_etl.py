@@ -8,7 +8,25 @@ import math
 import requests
 from datetime import datetime, timedelta
 
+import os
 
+# ============================================================
+# CONFIG (FROM ENV)
+# ============================================================
+MONGO_URI = os.getenv("MONGO_URI")
+if not MONGO_URI:
+    raise RuntimeError("❌ MONGO_URI not set")
+
+START_DATE = os.getenv("START_DATE")
+END_DATE   = os.getenv("END_DATE")
+
+if not START_DATE or not END_DATE:
+    raise RuntimeError("❌ START_DATE / END_DATE not set")
+
+PLANT_RADIUS_M = int(os.getenv("PLANT_RADIUS_M", 200))
+SITE_RADIUS_M  = int(os.getenv("SITE_RADIUS_M", 200))
+
+OSRM_BASE = os.getenv("OSRM_BASE", "https://router.project-osrm.org")
 # ============================================================
 # HELPER FUNCTIONS
 # ============================================================
