@@ -103,6 +103,8 @@ def make_geojson_feature(linestring_coords, properties=None, timestamps=None):
         "properties": props,
     }
 
+def utcnow():
+    return datetime.now(timezone.utc)
 
 # ============================================================
 # PROCESS ONE TICKET (FIRST COMPLETE ROUNDTRIP ONLY)
