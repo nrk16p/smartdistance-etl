@@ -9,6 +9,7 @@ import requests
 from datetime import datetime, timedelta
 
 import os
+from datetime import datetime, timedelta, timezone
 
 # ============================================================
 # CONFIG (FROM ENV)
@@ -16,6 +17,10 @@ import os
 MONGO_URI = os.getenv("MONGO_URI")
 if not MONGO_URI:
     raise RuntimeError("❌ MONGO_URI not set")
+
+DB_ANALYTICS = os.getenv("DB_ANALYTICS", "analytics")
+COL_SUMMARY  = os.getenv("COL_SUMMARY", "smartdistance")
+COL_RAW      = os.getenv("COL_RAW", "raw_smartdistance")
 
 START_DATE = os.getenv("START_DATE")
 END_DATE   = os.getenv("END_DATE")
@@ -27,6 +32,8 @@ PLANT_RADIUS_M = int(os.getenv("PLANT_RADIUS_M", 200))
 SITE_RADIUS_M  = int(os.getenv("SITE_RADIUS_M", 200))
 
 OSRM_BASE = os.getenv("OSRM_BASE", "https://router.project-osrm.org")
+
+LOGIC_VERSION = os.getenv("LOGIC_VERSION", "roundtrip_v1")
 # ============================================================
 # HELPER FUNCTIONS
 # ============================================================
