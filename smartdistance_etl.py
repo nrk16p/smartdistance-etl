@@ -383,17 +383,26 @@ def main():
             error_msg = str(e)
 
         finally:
-            client[DB_ANALYTICS]["etl_jobs"].insert_one({
-                "_id": f"smartdistance_{FILTER_DATE}",
-                "run_date": FILTER_DATE,
-                "status": status,
-                "processed": processed,
-                "summary_written": summary_written,
-                "raw_written": raw_written,
-                "error": error_msg,
-                "created_at": datetime.utcnow(),
-            })
-
+            client[DB_ANALYTICS]["etl_jobs"].update_one(
+                {"_id": f"smartdistance_{FILTER_DATE}"},
+                {
+                    "$set": {
+                        "job": "smartdistance",
+                        "run_date": FILTER_DATE,
+                        "status": status,
+                        "processed": processed,
+                        "summary_written": summary_written,
+                        "raw_written": raw_written,
+                        "error": error_msg,
+                        "updated_at": datetime.now(timezone.utc),
+                    },
+                    "$setOnInsert": {
+                        "created_at": datetime.now(timezone.utc),
+                    }
+                },
+                upsert=True
+            )
+            
             print(f"✅ DONE {FILTER_DATE} processed={processed}")
 
 
